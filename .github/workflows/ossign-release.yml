@@ -15,8 +15,8 @@ on:
 
 
 env:
-  SOURCE_REPOSITORY: 'StroepWafel/LYTE-NSIS-Installer'
-  SOURCE_REPOSITORY_NAME: 'LYTE-NSIS-Installer'
+  SOURCE_REPOSITORY: 'StroepWafel/LYTE-Installer'
+  SOURCE_REPOSITORY_NAME: 'LYTE-Installer'
 
 
 jobs:
@@ -101,5 +101,6 @@ jobs:
             The source code was fetched from https://github.com/${{ env.SOURCE_REPOSITORY }}@${{ github.event.inputs.source_branch }}
             
           
+
 
 
