@@ -34,24 +34,22 @@ jobs:
           ref: ${{ github.event.inputs.source_branch }}
           fetch-depth: 1
 
-      - name: Install NSIS
-        run: choco install nsis -y
-  
-      - name: Add NSIS to PATH
-        run: echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    
-      - name: Copy inetc plugin DLLs
-        shell: bash
-        run: |
-          rm -rf plugins Plugins
-          curl -o Inetc.zip https://nsis.sourceforge.io/mediawiki/images/c/c9/Inetc.zip
-          unzip Inetc.zip
-          cp Plugins/x86-unicode/INetC.dll "C:/Program Files (x86)/NSIS/Plugins/x86-unicode/inetc.dll"
-          cp Plugins/x86-ansi/INetC.dll "C:/Program Files (x86)/NSIS/Plugins/x86-ansi/inetc.dll"
-          rm Inetc.zip
-    
-      - name: Compile NSIS installer
-        run: makensis LYTEInstaller.nsi
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Build uninstaller
+        run: pyinstaller uninstaller.spec
+
+      - name: Build installer
+        run: pyinstaller installer.spec
+
+      - name: Copy installer for artifact
+        run: copy dist\LYTE_Installer.exe LYTE_Installer.exe
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -101,6 +99,5 @@ jobs:
             The source code was fetched from https://github.com/${{ env.SOURCE_REPOSITORY }}@${{ github.event.inputs.source_branch }}
             
           
-
 
 
